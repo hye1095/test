@@ -2,220 +2,203 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>채권양수도 추론 대시보드 v2</title>
+<title>채권양수도 추론 대시보드 v3 — Figma Export</title>
 <style>
 :root {
-  --bg: #EDEEF2; --surface: #FFFFFF; --s2: #F4F5F8; --s3: #EDEEF2;
-  --border: #E0E3EA; --border-mid: #C4C9D6;
-  --t1: #16181E; --t2: #4A5268; --t3: #8A93A8;
-  --blue: #2557E6; --blue-dim: #EDF1FD; --blue-mid: #B8C8F8;
-  --red: #CF3535; --red-dim: #FDF0F0;
-  --amber: #B87010; --amber-dim: #FDF4E6;
-  --green: #178048; --green-dim: #EBF7F0;
-  --r: 8px; --r-sm: 5px;
-  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --bg:#EDEEF2;--surface:#FFFFFF;--s2:#F4F5F8;--s3:#EDEEF2;
+  --border:#E0E3EA;--border-mid:#C4C9D6;
+  --t1:#16181E;--t2:#4A5268;--t3:#8A93A8;
+  --blue:#2557E6;--blue-dim:#EDF1FD;--blue-mid:#B8C8F8;
+  --amber:#B87010;--amber-dim:#FDF4E6;
+  --green:#178048;--green-dim:#EBF7F0;
+  --red:#CF3535;--red-dim:#FDF0F0;
+  --r:8px;--r-sm:5px;
+  font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
-body { background: var(--bg); color: var(--t1); font-size: 12px; line-height: 1.5; }
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#C8CAD0;padding:24px;}
 
-.layout { display: flex; height: 100vh; }
+/* 1440px 고정 프레임 */
+.frame{width:1440px;background:var(--bg);border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.16);display:flex;}
 
 /* V5 본문 딤 */
-.main-dimmed {
-  flex: 1; background: var(--bg); opacity: .38;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 600; color: var(--t2); text-align: center;
-}
-.main-dimmed .sub { font-size: 11px; color: var(--t3); margin-top: 4px; }
+.dimmed{flex:1;background:#DDDEE3;display:flex;align-items:center;justify-content:center;min-height:100%;}
+.dimmed-inner{text-align:center;opacity:.5;}
+.dimmed-inner .ttl{font-size:14px;font-weight:600;color:var(--t2);}
+.dimmed-inner .sub{font-size:11px;color:var(--t3);margin-top:4px;}
 
-/* 슬라이드 패널 */
-.panel {
-  width: 620px; flex-shrink: 0;
-  background: var(--surface);
-  border-left: 1px solid var(--border-mid);
-  display: flex; flex-direction: column;
-  box-shadow: -6px 0 28px rgba(0,0,0,.09);
-  animation: slideIn .2s ease;
-}
-@keyframes slideIn { from{transform:translateX(30px);opacity:0} to{transform:translateX(0);opacity:1} }
+/* 패널 */
+.panel{width:640px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border-mid);display:flex;flex-direction:column;box-shadow:-6px 0 28px rgba(0,0,0,.09);}
 
-/* 패널 헤더 */
-.ph {
-  padding: 12px 18px 10px; background: var(--t1);
-  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-}
-.ph-title { font-size: 13px; font-weight: 700; color: #fff; flex: 1; }
-.ph-sub { font-size: 10px; color: #6B7280; }
-.ph-close {
-  width: 26px; height: 26px; border-radius: 6px;
-  background: #23262E; border: none; color: #9AA5B8;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; cursor: pointer;
-}
-.ph-close:hover { background: #2D3142; color: #fff; }
+/* 헤더 */
+.ph{padding:12px 18px 10px;background:var(--t1);display:flex;align-items:center;gap:10px;}
+.ph-title{font-size:13px;font-weight:700;color:#fff;flex:1;}
+.ph-sub{font-size:10px;color:#6B7280;}
+.ph-close{width:26px;height:26px;border-radius:6px;background:#23262E;color:#9AA5B8;display:flex;align-items:center;justify-content:center;font-size:13px;}
 
-/* 고객 컨텍스트 배너 */
-.ctx-bar {
-  padding: 7px 18px; background: var(--blue-dim);
-  border-bottom: 1px solid var(--blue-mid);
-  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
-}
-.ctx-label { font-size: 10px; color: var(--t3); }
-.ctx-name  { font-size: 11px; font-weight: 700; }
-.ctx-chip  { font-size: 10px; font-weight: 600; padding: 1px 8px; border-radius: 20px; background: var(--surface); border: 1px solid var(--blue-mid); color: var(--blue); margin-left: auto; }
-.ctx-chip + .ctx-chip { margin-left: 4px; }
+/* ★ 고객 컨텍스트 배너 — 채권 기본 정보 통합 */
+.ctx{padding:10px 18px;background:var(--blue-dim);border-bottom:1px solid var(--blue-mid);}
+.ctx-row1{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.ctx-lbl{font-size:10px;color:var(--t3);}
+.ctx-name{font-size:11px;font-weight:700;color:var(--t1);}
+.ctx-chips{display:flex;gap:4px;margin-left:auto;}
+.ctx-chip{font-size:10px;font-weight:600;padding:1px 8px;border-radius:20px;background:var(--surface);border:1px solid var(--blue-mid);color:var(--blue);}
 
-/* ★ 앵커 네비 — 탭이 아닌 번호+텍스트 링크 바 */
-.anchor-nav {
-  display: flex; align-items: center; gap: 0;
-  padding: 0 18px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  overflow-x: auto;
-}
-.anchor-nav::-webkit-scrollbar { height: 0; }
-.anc {
-  display: flex; align-items: center; gap: 5px;
-  padding: 10px 12px 10px 0;
-  font-size: 10px; font-weight: 600; color: var(--t3);
-  cursor: pointer; white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color .15s;
-  text-decoration: none;
-}
-.anc:hover { color: var(--t2); }
-.anc.active { color: var(--t1); border-bottom-color: var(--t1); }
-.anc .num {
-  font-size: 9px; font-weight: 800; color: var(--t3);
-  letter-spacing: .02em;
-}
-.anc.active .num { color: var(--blue); }
-.anc-sep { width: 1px; height: 12px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
+/* 채권 기본 정보 바 */
+.debt-info-bar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
+.dib{background:var(--surface);border:1px solid var(--blue-mid);border-radius:var(--r-sm);padding:6px 9px;}
+.dib-lbl{font-size:9px;color:var(--t3);margin-bottom:2px;}
+.dib-val{font-size:11px;font-weight:700;color:var(--t1);}
+.dib-val.warn{color:var(--red);}
+.dib-val.ok{color:var(--green);}
 
-/* 패널 스크롤 바디 */
-.pbody { flex: 1; overflow-y: auto; padding: 0; }
+/* 소멸시효 경고 배너 */
+.sot-warn{display:flex;align-items:center;gap:7px;padding:6px 10px;background:var(--red-dim);border:1px solid #F5BEBE;border-radius:var(--r-sm);margin-top:7px;font-size:10px;font-weight:600;color:var(--red);}
+.sot-ok{display:flex;align-items:center;gap:7px;padding:6px 10px;background:var(--green-dim);border:1px solid #B0E0C6;border-radius:var(--r-sm);margin-top:7px;font-size:10px;font-weight:600;color:var(--green);}
+
+/* 앵커 네비 */
+.anav{display:flex;align-items:center;padding:0 18px;background:var(--surface);border-bottom:1px solid var(--border);}
+.anc{display:flex;align-items:center;gap:5px;padding:10px 12px 10px 0;font-size:10px;font-weight:600;color:var(--t3);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;text-decoration:none;}
+.anc.on{color:var(--t1);border-bottom-color:var(--t1);}
+.anc .n{font-size:9px;font-weight:800;}
+.anc.on .n{color:var(--blue);}
+.asep{width:1px;height:12px;background:var(--border);margin:0 4px;}
 
 /* 섹션 */
-.section { padding: 16px 18px; border-bottom: 1px solid var(--border); }
-.section:last-child { border-bottom: none; }
-
-/* 섹션 헤더 */
-.sec-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.sec-num { font-size: 9px; font-weight: 800; color: var(--blue); letter-spacing: .04em; }
-.sec-title { font-size: 12px; font-weight: 700; color: var(--t1); flex: 1; }
-.sec-meta { font-size: 10px; color: var(--t3); }
+.sec{padding:16px 18px;border-bottom:1px solid var(--border);}
+.sec:last-child{border-bottom:none;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.sn{font-size:9px;font-weight:800;color:var(--blue);letter-spacing:.04em;}
+.st{font-size:12px;font-weight:700;flex:1;}
+.sm{font-size:10px;color:var(--t3);}
 
 /* 공통 */
-.card { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r); padding: 11px 13px; }
-.badge { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 20px; font-size: 10px; font-weight: 600; }
-.badge.blue   { background: var(--blue-dim); color: var(--blue); }
-.badge.amber  { background: var(--amber-dim); color: var(--amber); }
-.badge.green  { background: var(--green-dim); color: var(--green); }
-.badge.gray   { background: var(--s2); color: var(--t2); border: 1px solid var(--border); }
-.badge.red    { background: var(--red-dim); color: var(--red); }
+.card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:11px 13px;}
+.badge{display:inline-flex;align-items:center;padding:1px 7px;border-radius:20px;font-size:10px;font-weight:600;}
+.badge.bl{background:var(--blue-dim);color:var(--blue);}
+.badge.am{background:var(--amber-dim);color:var(--amber);}
+.badge.gr{background:var(--s2);color:var(--t2);border:1px solid var(--border);}
+.badge.gn{background:var(--green-dim);color:var(--green);}
+.badge.rd{background:var(--red-dim);color:var(--red);}
 
-/* ── 타임라인 ── */
-.timeline { display: flex; align-items: flex-start; overflow-x: auto; padding-bottom: 4px; }
-.tl-node { display: flex; flex-direction: column; align-items: center; min-width: 88px; }
-.tl-dot-wrap { display: flex; align-items: center; width: 100%; }
-.tl-line { flex: 1; height: 2px; }
-.tl-line.none { background: transparent; }
-.tl-line.solid { background: var(--border-mid); }
-.tl-line.blue  { background: var(--blue); opacity: .35; }
-.tl-line.dashed { background: repeating-linear-gradient(90deg,var(--border-mid) 0 4px,transparent 4px 8px); }
-.tl-dot {
-  width: 16px; height: 16px; border-radius: 50%; border: 2px solid; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 8px; font-weight: 800; color: #fff;
-}
-.tl-dot.origin  { border-color: var(--green);  background: var(--green); }
-.tl-dot.middle  { border-color: var(--border-mid); background: var(--s2); color: var(--t3); }
-.tl-dot.current { border-color: var(--blue);   background: var(--blue); }
-.tl-dot.est     { border-color: var(--amber);  background: var(--amber-dim); color: var(--amber); border-style: dashed; }
-.tl-info { margin-top: 8px; text-align: center; }
-.tl-org  { font-size: 10px; font-weight: 700; color: var(--t1); }
-.tl-date { font-size: 9px; color: var(--t3); margin-top: 1px; }
-.tl-tag  { margin-top: 3px; }
+/* ★ 타임라인 — 고지 여부 배지 포함 */
+.tl{display:flex;align-items:flex-start;}
+.tln{display:flex;flex-direction:column;align-items:center;min-width:96px;}
+.tlr{display:flex;align-items:center;width:100%;}
+.tll{flex:1;height:2px;}
+.tll.n{background:transparent;}
+.tll.s{background:var(--border-mid);}
+.tll.b{background:var(--blue);opacity:.35;}
+.tll.d{background:repeating-linear-gradient(90deg,var(--border-mid) 0 4px,transparent 4px 8px);}
+.tld{width:16px;height:16px;border-radius:50%;border:2px solid;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;}
+.tld.O{border-color:var(--green);background:var(--green);}
+.tld.M{border-color:var(--border-mid);background:var(--s2);color:var(--t3);}
+.tld.C{border-color:var(--blue);background:var(--blue);}
+.tld.E{border-color:var(--amber);background:var(--amber-dim);color:var(--amber);border-style:dashed;}
+.tli{margin-top:8px;text-align:center;}
+.tlo{font-size:10px;font-weight:700;}
+.tld2{font-size:9px;color:var(--t3);margin-top:1px;}
+.tltg{margin-top:4px;display:flex;flex-direction:column;gap:3px;align-items:center;}
 
-/* 이전 이력 테이블 */
-.hist-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-top: 10px; }
-.hist-table th { background: var(--s3); padding: 6px 8px; text-align: left; font-weight: 700; color: var(--t2); border-bottom: 1px solid var(--border); }
-.hist-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); color: var(--t1); }
-.hist-table tr:last-child td { border-bottom: none; }
-.hist-table .est-row td { color: var(--amber); }
+/* 고지 배지 */
+.notice-ok{font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;background:var(--green-dim);color:var(--green);border:1px solid #B0E0C6;}
+.notice-ng{font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;background:var(--red-dim);color:var(--red);border:1px solid #F5BEBE;}
+.notice-na{font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;background:var(--s2);color:var(--t3);border:1px solid var(--border);}
 
-.data-note { display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--t3); margin-top: 8px; }
-.data-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-.data-warn { color: var(--amber); font-weight: 600; }
+/* 테이블 */
+.ht{width:100%;border-collapse:collapse;font-size:10px;margin-top:10px;}
+.ht th{background:var(--s3);padding:6px 8px;text-align:left;font-weight:700;color:var(--t2);border-bottom:1px solid var(--border);}
+.ht td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--t1);}
+.ht tr:last-child td{border-bottom:none;}
 
-/* ── 확률 추론 ── */
-.prob-list { display: flex; flex-direction: column; gap: 9px; }
-.prob-item { display: flex; align-items: center; gap: 10px; }
-.prob-rank { width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--s3); color: var(--t2); }
-.prob-rank.top { background: var(--blue); color: #fff; }
-.prob-org { font-size: 11px; font-weight: 600; min-width: 80px; }
-.prob-bar-wrap { flex: 1; }
-.prob-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 2px; }
-.prob-fill { height: 100%; border-radius: 3px; }
-.prob-sub { font-size: 9px; color: var(--t3); }
-.prob-pct { font-size: 12px; font-weight: 700; min-width: 36px; text-align: right; }
+.dnote{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--t3);margin-top:8px;}
+.ddot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.dwarn{color:var(--amber);font-weight:600;}
 
-.ref-warn { display: flex; align-items: flex-start; gap: 6px; padding: 7px 10px; background: var(--amber-dim); border: 1px solid #EDD090; border-radius: var(--r-sm); font-size: 10px; color: var(--amber); font-weight: 600; margin-top: 10px; }
+/* 확률 */
+.plist{display:flex;flex-direction:column;gap:9px;}
+.pi{display:flex;align-items:flex-start;gap:10px;}
+.pr{width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--s3);color:var(--t2);margin-top:2px;}
+.pr.t{background:var(--blue);color:#fff;}
+.po{font-size:11px;font-weight:600;min-width:80px;}
+.pw{flex:1;}
+.pt{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:2px;}
+.pf{height:100%;border-radius:3px;}
+.ps{font-size:9px;color:var(--t3);}
+.pp{font-size:12px;font-weight:700;min-width:36px;text-align:right;margin-top:2px;}
 
-/* 트렌드 그리드 */
-.trend-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-.trend-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 9px 10px; }
-.trend-year { font-size: 9px; font-weight: 700; color: var(--t3); margin-bottom: 6px; }
-.trend-row { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
-.trend-row:last-child { margin-bottom: 0; }
-.trend-org { font-size: 9px; color: var(--t2); min-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.trend-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.trend-fill { height: 100%; border-radius: 2px; }
-.trend-pct { font-size: 9px; font-weight: 600; min-width: 26px; text-align: right; }
+/* ★ 기관 담당자 카드 */
+.contact-card{margin-top:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;gap:10px;}
+.contact-icon{font-size:16px;flex-shrink:0;}
+.contact-info{flex:1;}
+.contact-name{font-size:11px;font-weight:700;}
+.contact-meta{font-size:10px;color:var(--t3);margin-top:1px;}
+.contact-tel{font-size:11px;font-weight:600;color:var(--blue);}
+.contact-status{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;}
+.status-dot{width:6px;height:6px;border-radius:50%;}
+.status-dot.on{background:var(--green);}
+.status-dot.off{background:var(--t3);}
 
-/* ── 역방향 추적 ── */
-.rev-summary { font-size: 11px; line-height: 1.75; color: var(--t1); margin-top: 10px; }
-.ai-src { font-size: 9px; color: var(--t3); margin-top: 8px; padding-top: 6px; border-top: 1px dashed var(--border); }
+.rwarn{display:flex;gap:6px;padding:7px 10px;background:var(--amber-dim);border:1px solid #EDD090;border-radius:var(--r-sm);font-size:10px;color:var(--amber);font-weight:600;margin-top:10px;}
 
-/* ── 질의 이력 (읽기 전용) ── */
-.qa-readonly-note {
-  display: flex; align-items: center; gap: 6px;
-  padding: 6px 10px; background: var(--s2); border: 1px solid var(--border);
-  border-radius: var(--r-sm); font-size: 10px; color: var(--t2);
-  margin-bottom: 10px;
-}
-.qa-item { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-.qa-item:last-child { margin-bottom: 0; }
+/* 트렌드 */
+.tgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.ti{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 10px;}
+.ty{font-size:9px;font-weight:700;color:var(--t3);margin-bottom:6px;}
+.tr2{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
+.tr2:last-child{margin-bottom:0;}
+.to2{font-size:9px;color:var(--t2);min-width:48px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tt2{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.tf2{height:100%;border-radius:2px;}
+.tp2{font-size:9px;font-weight:600;min-width:26px;text-align:right;}
 
-.q-row { display: flex; flex-direction: column; align-items: flex-end; }
-.q-who { font-size: 9px; color: var(--t3); margin-bottom: 2px; }
-.q-bubble { background: var(--blue); color: #fff; border-radius: var(--r) var(--r) 2px var(--r); padding: 7px 11px; font-size: 11px; max-width: 85%; }
+/* 역방향 */
+.rsm{font-size:11px;line-height:1.75;margin-top:10px;}
+.asrc{font-size:9px;color:var(--t3);margin-top:8px;padding-top:6px;border-top:1px dashed var(--border);}
 
-.a-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: var(--r); padding: 10px 12px; }
-.a-hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-.a-lbl { font-size: 10px; font-weight: 700; color: var(--blue); flex: 1; }
-.a-time { font-size: 9px; color: var(--t3); }
-.a-body { font-size: 11px; line-height: 1.7; color: var(--t1); }
-.a-body table { width: 100%; border-collapse: collapse; margin-top: 7px; font-size: 10px; }
-.a-body th { background: var(--s2); padding: 5px 8px; text-align: left; font-weight: 700; color: var(--t2); border-bottom: 1px solid var(--border); }
-.a-body td { padding: 5px 8px; border-bottom: 1px solid var(--border); }
-.a-body tr:last-child td { border-bottom: none; }
-.a-caution { font-size: 9px; color: var(--amber); font-weight: 600; margin-top: 5px; }
+/* ★ 이의제기·분쟁 이력 */
+.dispute-list{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.dispute-item{display:flex;gap:10px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);}
+.dispute-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.dispute-date{font-size:10px;color:var(--t3);min-width:60px;flex-shrink:0;margin-top:1px;}
+.dispute-body{flex:1;}
+.dispute-title{font-size:11px;font-weight:600;margin-bottom:2px;}
+.dispute-desc{font-size:10px;color:var(--t2);line-height:1.5;}
+
+/* 질의 이력 */
+.qnote{display:flex;gap:6px;padding:6px 10px;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);font-size:10px;color:var(--t2);margin-bottom:10px;}
+.qitem{margin-bottom:12px;display:flex;flex-direction:column;gap:6px;}
+.qitem:last-child{margin-bottom:0;}
+.qrow{display:flex;flex-direction:column;align-items:flex-end;}
+.qwho{font-size:9px;color:var(--t3);margin-bottom:2px;}
+.qbub{background:var(--blue);color:#fff;border-radius:var(--r) var(--r) 2px var(--r);padding:7px 11px;font-size:11px;max-width:85%;}
+.acard{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:var(--r);padding:10px 12px;}
+.ahdr{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.albl{font-size:10px;font-weight:700;color:var(--blue);flex:1;}
+.atime{font-size:9px;color:var(--t3);}
+.abody{font-size:11px;line-height:1.7;}
+.abody table{width:100%;border-collapse:collapse;margin-top:7px;font-size:10px;}
+.abody th{background:var(--s2);padding:5px 8px;text-align:left;font-weight:700;color:var(--t2);border-bottom:1px solid var(--border);}
+.abody td{padding:5px 8px;border-bottom:1px solid var(--border);}
+.abody tr:last-child td{border-bottom:none;}
+.acaut{font-size:9px;color:var(--amber);font-weight:600;margin-top:5px;}
+
+/* 피그마 안내 */
+.fnote{margin-top:16px;background:#1A1D23;color:#9AA5B8;border-radius:8px;padding:12px 16px;font-size:11px;line-height:1.8;width:1440px;}
+.fnote strong{color:#6DA3F5;}
+
+/* 섹션 구분 소제목 */
+.sub-hdr{font-size:10px;font-weight:700;color:var(--t2);margin:10px 0 6px;}
 </style>
 </head>
 <body>
-<div class="layout">
+
+<div class="frame">
 
   <!-- V5 본문 딤 -->
-  <div class="main-dimmed">
-    <div>
-      <div>V5 상담 진행 화면</div>
+  <div class="dimmed">
+    <div class="dimmed-inner">
+      <div class="ttl">V5 상담 진행 화면</div>
       <div class="sub">채권 추적 선택 → 우측 패널 오픈</div>
     </div>
   </div>
@@ -228,340 +211,351 @@ body { background: var(--bg); color: var(--t1); font-size: 12px; line-height: 1.
       <span style="font-size:15px;">🔍</span>
       <span class="ph-title">채권양수도 추론 대시보드</span>
       <span class="ph-sub">과거 실적 기반 AI 추론</span>
-      <button class="ph-close">✕</button>
+      <div class="ph-close">✕</div>
     </div>
 
-    <!-- 고객 컨텍스트 -->
-    <div class="ctx-bar">
-      <span class="ctx-label">현재 상담</span>
-      <span class="ctx-name">김○○ · #202411482</span>
-      <span class="ctx-chip">○○캐피탈</span>
-      <span class="ctx-chip">2022년 이후</span>
+    <!-- ★ 고객 컨텍스트 + 채권 기본 정보 통합 배너 -->
+    <div class="ctx">
+      <div class="ctx-row1">
+        <span class="ctx-lbl">현재 상담</span>
+        <span class="ctx-name">김○○ · #202411482</span>
+        <div class="ctx-chips">
+          <span class="ctx-chip">○○캐피탈</span>
+          <span class="ctx-chip">2022년 이후</span>
+        </div>
+      </div>
+
+      <!-- 채권 기본 정보 4칸 -->
+      <div class="debt-info-bar">
+        <div class="dib">
+          <div class="dib-lbl">원금</div>
+          <div class="dib-val">21,010,000원</div>
+        </div>
+        <div class="dib">
+          <div class="dib-lbl">잔여 채무액</div>
+          <div class="dib-val">18,350,000원</div>
+        </div>
+        <div class="dib">
+          <div class="dib-lbl">연체 시작</div>
+          <div class="dib-val">2020.03.15</div>
+        </div>
+        <div class="dib">
+          <div class="dib-lbl">소멸시효</div>
+          <div class="dib-val warn">2025.03.14 ⚠</div>
+        </div>
+      </div>
+
+      <!-- 소멸시효 경고 -->
+      <div class="sot-warn">
+        ⚠ 소멸시효 임박 — 2025.03.14 만료 예정 (D-122). 시효 중단 여부 즉시 확인 필요
+      </div>
     </div>
 
-    <!-- ★ 앵커 네비 — 번호+텍스트 링크 형태 -->
-    <nav class="anchor-nav" id="anchorNav">
-      <a class="anc active" href="#s1" onclick="setActive(this)">
-        <span class="num">01</span> 양수도 타임라인
-      </a>
-      <div class="anc-sep"></div>
-      <a class="anc" href="#s2" onclick="setActive(this)">
-        <span class="num">02</span> 귀속 기관 추론
-      </a>
-      <div class="anc-sep"></div>
-      <a class="anc" href="#s3" onclick="setActive(this)">
-        <span class="num">03</span> 역방향 추적
-      </a>
-      <div class="anc-sep"></div>
-      <a class="anc" href="#s4" onclick="setActive(this)">
-        <span class="num">04</span> 관련 질의 이력
-      </a>
+    <!-- 앵커 네비 -->
+    <nav class="anav">
+      <a class="anc on"><span class="n">01</span> 양수도 타임라인</a>
+      <div class="asep"></div>
+      <a class="anc"><span class="n">02</span> 귀속 기관 추론</a>
+      <div class="asep"></div>
+      <a class="anc"><span class="n">03</span> 역방향 · 분쟁 이력</a>
+      <div class="asep"></div>
+      <a class="anc"><span class="n">04</span> 관련 질의 이력</a>
     </nav>
 
-    <!-- 바디 -->
-    <div class="pbody" id="panelBody">
+    <!-- ── 01 양수도 타임라인 ── -->
+    <div class="sec">
+      <div class="sh">
+        <span class="sn">01</span>
+        <span class="st">채권 이전 경로 타임라인</span>
+        <span class="badge bl">순방향</span>
+        <span class="sm">총 3단계</span>
+      </div>
+      <div class="card">
 
-      <!-- ── 01 양수도 타임라인 ── -->
-      <div class="section" id="s1">
-        <div class="sec-hdr">
-          <span class="sec-num">01</span>
-          <span class="sec-title">채권 이전 경로 타임라인</span>
-          <span class="badge blue">순방향</span>
-          <span class="sec-meta">총 3단계</span>
-        </div>
-
-        <div class="card">
-          <!-- 타임라인 -->
-          <div class="timeline">
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line none"></div>
-                <div class="tl-dot origin">원</div>
-                <div class="tl-line blue"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org">A국민은행</div>
-                <div class="tl-date">원채권자</div>
-                <div class="tl-tag"><span class="badge gray">원채권</span></div>
-              </div>
-            </div>
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line solid"></div>
-                <div class="tl-dot middle">1</div>
-                <div class="tl-line solid"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org">○○캐피탈</div>
-                <div class="tl-date">'21.06 양수</div>
-                <div class="tl-tag"><span class="badge gray">매각</span></div>
-              </div>
-            </div>
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line solid"></div>
-                <div class="tl-dot current">현</div>
-                <div class="tl-line dashed"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org" style="color:var(--blue);">△△저축은행</div>
-                <div class="tl-date">'23.03 양수</div>
-                <div class="tl-tag"><span class="badge blue">현재 추정</span></div>
-              </div>
-            </div>
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line dashed"></div>
-                <div class="tl-dot est">?</div>
-                <div class="tl-line none"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org" style="color:var(--amber);">□□신용관리</div>
-                <div class="tl-date">미확인</div>
-                <div class="tl-tag"><span class="badge amber">추정 12%</span></div>
+        <!-- ★ 타임라인 노드에 고지 여부 배지 포함 -->
+        <div class="tl">
+          <div class="tln">
+            <div class="tlr"><div class="tll n"></div><div class="tld O">원</div><div class="tll b"></div></div>
+            <div class="tli">
+              <div class="tlo">A국민은행</div>
+              <div class="tld2">원채권자</div>
+              <div class="tltg">
+                <span class="badge gr">원채권</span>
+                <span class="notice-na">고지 해당없음</span>
               </div>
             </div>
           </div>
+          <div class="tln">
+            <div class="tlr"><div class="tll s"></div><div class="tld M">1</div><div class="tll s"></div></div>
+            <div class="tli">
+              <div class="tlo">○○캐피탈</div>
+              <div class="tld2">'21.06 양수</div>
+              <div class="tltg">
+                <span class="badge gr">매각</span>
+                <span class="notice-ok">고지 완료</span>
+              </div>
+            </div>
+          </div>
+          <div class="tln">
+            <div class="tlr"><div class="tll s"></div><div class="tld C">현</div><div class="tll d"></div></div>
+            <div class="tli">
+              <div class="tlo" style="color:var(--blue);">△△저축은행</div>
+              <div class="tld2">'23.03 양수</div>
+              <div class="tltg">
+                <span class="badge bl">현재 추정</span>
+                <span class="notice-ng">⚠ 미고지</span>
+              </div>
+            </div>
+          </div>
+          <div class="tln">
+            <div class="tlr"><div class="tll d"></div><div class="tld E">?</div><div class="tll n"></div></div>
+            <div class="tli">
+              <div class="tlo" style="color:var(--amber);">□□신용관리</div>
+              <div class="tld2">미확인</div>
+              <div class="tltg">
+                <span class="badge am">추정 12%</span>
+                <span class="notice-na">미확인</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <!-- 이전 이력 테이블 -->
-          <table class="hist-table">
-            <thead>
-              <tr><th>양도 기관</th><th>양수 기관</th><th>이전 시점</th><th>유형</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>A국민은행</td>
-                <td>○○캐피탈</td>
-                <td>2021.06</td>
-                <td><span class="badge gray">매각</span></td>
-              </tr>
-              <tr>
-                <td>○○캐피탈</td>
-                <td style="font-weight:700;color:var(--blue);">△△저축은행</td>
-                <td>2023.03</td>
-                <td><span class="badge gray">매각</span></td>
-              </tr>
-              <tr class="est-row">
-                <td>△△저축은행</td>
-                <td>□□신용관리 (추정)</td>
-                <td>미확인</td>
-                <td><span class="badge amber">추정</span></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="data-note">
-            <div class="data-dot"></div>
-            기간계 연동 · 최종 갱신 2024.11.01
-            <span class="data-warn">⚠ 재조회 권장</span>
+        <!-- 미고지 경고 -->
+        <div class="sot-warn" style="margin-top:10px;">
+          ⚠ △△저축은행 → 고객 서면 고지 미이행 확인. 이의 신청 근거 가능성 있음
+        </div>
+
+        <!-- 이전 이력 테이블 -->
+        <table class="ht">
+          <thead><tr><th>양도 기관</th><th>양수 기관</th><th>이전 시점</th><th>유형</th><th>고지 여부</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>A국민은행</td><td>○○캐피탈</td><td>2021.06</td>
+              <td><span class="badge gr">매각</span></td>
+              <td><span class="notice-na">해당없음</span></td>
+            </tr>
+            <tr>
+              <td>○○캐피탈</td><td style="font-weight:700;color:var(--blue);">△△저축은행</td><td>2023.03</td>
+              <td><span class="badge gr">매각</span></td>
+              <td><span class="notice-ok">완료</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--amber);">△△저축은행</td>
+              <td style="color:var(--amber);">□□신용관리 (추정)</td>
+              <td style="color:var(--t3);">미확인</td>
+              <td><span class="badge am">추정</span></td>
+              <td><span class="notice-ng">⚠ 미고지</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="dnote">
+          <div class="ddot"></div>
+          기간계 연동 · 최종 갱신 2024.11.01
+          <span class="dwarn">⚠ 재조회 권장</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 02 귀속 기관 추론 ── -->
+    <div class="sec">
+      <div class="sh">
+        <span class="sn">02</span>
+        <span class="st">현재 귀속 기관 AI 추론</span>
+        <span class="badge bl">AI 분석</span>
+        <span class="sm">○○캐피탈 채권 기준</span>
+      </div>
+      <div class="card">
+        <div class="plist">
+          <div class="pi">
+            <div class="pr t">1</div>
+            <div class="po">△△저축은행</div>
+            <div class="pw">
+              <div class="pt"><div class="pf" style="width:82%;background:var(--blue);"></div></div>
+              <div class="ps">5,230건 · 최근 3년 양수 이력</div>
+            </div>
+            <div class="pp" style="color:var(--blue);">82%</div>
+          </div>
+          <div class="pi">
+            <div class="pr">2</div>
+            <div class="po">□□신용관리</div>
+            <div class="pw">
+              <div class="pt"><div class="pf" style="width:12%;background:var(--amber);"></div></div>
+              <div class="ps">600건 · 2차 양도 추정</div>
+            </div>
+            <div class="pp" style="color:var(--amber);">12%</div>
+          </div>
+          <div class="pi">
+            <div class="pr">3</div>
+            <div class="po">E저축은행</div>
+            <div class="pw">
+              <div class="pt"><div class="pf" style="width:6%;background:var(--t3);"></div></div>
+              <div class="ps">기타 이력</div>
+            </div>
+            <div class="pp">6%</div>
+          </div>
+        </div>
+        <div class="rwarn">⚠ 과거 실적 기반 참고 정보입니다. 실제 귀속 기관은 직접 확인이 필요합니다.</div>
+      </div>
+
+      <!-- ★ 1순위 기관 담당자 연락처 -->
+      <div class="sub-hdr">1순위 기관 담당자</div>
+      <div class="contact-card">
+        <span class="contact-icon">🏦</span>
+        <div class="contact-info">
+          <div class="contact-name">△△저축은행 · 채권관리팀</div>
+          <div class="contact-meta">협약 유효 2025.12 · 감면 30% 가능</div>
+        </div>
+        <div>
+          <div class="contact-tel">☎ 02-XXX-XXXX</div>
+          <div class="contact-status" style="margin-top:3px;">
+            <div class="status-dot on"></div>
+            <span style="font-size:10px;color:var(--green);">홍○○ 과장 · 온라인</span>
           </div>
         </div>
       </div>
 
-      <!-- ── 02 귀속 기관 추론 ── -->
-      <div class="section" id="s2">
-        <div class="sec-hdr">
-          <span class="sec-num">02</span>
-          <span class="sec-title">현재 귀속 기관 AI 추론</span>
-          <span class="badge blue">AI 분석</span>
-          <span class="sec-meta">○○캐피탈 채권 기준</span>
+      <!-- 연도별 트렌드 -->
+      <div class="sub-hdr">연도별 주요 양수기관 트렌드</div>
+      <div class="tgrid">
+        <div class="ti">
+          <div class="ty">2022년</div>
+          <div class="tr2"><span class="to2">D대부업체</span><div class="tt2"><div class="tf2" style="width:70%;background:var(--blue);"></div></div><span class="tp2">43%</span></div>
+          <div class="tr2"><span class="to2">△△저축</span><div class="tt2"><div class="tf2" style="width:40%;background:var(--t3);"></div></div><span class="tp2">24%</span></div>
         </div>
+        <div class="ti">
+          <div class="ty">2023년</div>
+          <div class="tr2"><span class="to2">△△저축</span><div class="tt2"><div class="tf2" style="width:82%;background:var(--blue);"></div></div><span class="tp2">82%</span></div>
+          <div class="tr2"><span class="to2">□□신용</span><div class="tt2"><div class="tf2" style="width:12%;background:var(--t3);"></div></div><span class="tp2">12%</span></div>
+        </div>
+        <div class="ti">
+          <div class="ty">2024년</div>
+          <div class="tr2"><span class="to2">△△저축</span><div class="tt2"><div class="tf2" style="width:60%;background:var(--blue);"></div></div><span class="tp2">60%</span></div>
+          <div class="tr2"><span class="to2">M자산관리</span><div class="tt2"><div class="tf2" style="width:28%;background:var(--amber);"></div></div><span class="tp2">28%</span></div>
+        </div>
+      </div>
+    </div>
 
-        <div class="card">
-          <div class="prob-list">
-            <div class="prob-item">
-              <div class="prob-rank top">1</div>
-              <div class="prob-org">△△저축은행</div>
-              <div class="prob-bar-wrap">
-                <div class="prob-track"><div class="prob-fill" style="width:82%;background:var(--blue);"></div></div>
-                <div class="prob-sub">5,230건 · 최근 3년 양수 이력</div>
-              </div>
-              <div class="prob-pct" style="color:var(--blue);">82%</div>
-            </div>
-            <div class="prob-item">
-              <div class="prob-rank">2</div>
-              <div class="prob-org">□□신용관리</div>
-              <div class="prob-bar-wrap">
-                <div class="prob-track"><div class="prob-fill" style="width:12%;background:var(--amber);"></div></div>
-                <div class="prob-sub">600건 · 2차 양도 추정</div>
-              </div>
-              <div class="prob-pct" style="color:var(--amber);">12%</div>
-            </div>
-            <div class="prob-item">
-              <div class="prob-rank">3</div>
-              <div class="prob-org">E저축은행</div>
-              <div class="prob-bar-wrap">
-                <div class="prob-track"><div class="prob-fill" style="width:6%;background:var(--t3);"></div></div>
-                <div class="prob-sub">기타 이력</div>
-              </div>
-              <div class="prob-pct">6%</div>
-            </div>
+    <!-- ── 03 역방향 추적 + 이의제기·분쟁 이력 ── -->
+    <div class="sec">
+      <div class="sh">
+        <span class="sn">03</span>
+        <span class="st">역방향 추적 · 분쟁 이력</span>
+        <span class="badge am">역방향</span>
+        <span class="sm">현재 기관 → 원채권자</span>
+      </div>
+
+      <!-- 역방향 타임라인 -->
+      <div class="card">
+        <div class="tl">
+          <div class="tln">
+            <div class="tlr"><div class="tll n"></div><div class="tld C">현</div><div class="tll s"></div></div>
+            <div class="tli"><div class="tlo" style="color:var(--blue);">△△저축은행</div><div class="tld2">현재 귀속 추정</div></div>
           </div>
-          <div class="ref-warn">⚠ 과거 실적 기반 참고 정보입니다. 실제 귀속 기관은 직접 확인이 필요합니다.</div>
+          <div class="tln">
+            <div class="tlr"><div class="tll s"></div><div class="tld M" style="font-size:10px;">←</div><div class="tll s"></div></div>
+            <div class="tli"><div class="tlo">○○캐피탈</div><div class="tld2">'21.06 양도</div></div>
+          </div>
+          <div class="tln">
+            <div class="tlr"><div class="tll s"></div><div class="tld O">원</div><div class="tll n"></div></div>
+            <div class="tli"><div class="tlo">A국민은행</div><div class="tld2">원채권자</div></div>
+          </div>
         </div>
+        <div class="rsm">
+          현재 추정 귀속 기관 <strong>△△저축은행</strong>의 채권은 <strong>○○캐피탈</strong>로부터 2023년 3월 양수한 것으로 확인되며, 최초 원채권자는 <strong>A국민은행</strong>입니다.<br>합병에 의한 변경 건은 없으며 전 건 채권 매각으로 신고된 이력입니다.
+        </div>
+        <div class="asrc">채권양수도 추론 에이전트 · 지식베이스 v2024.11</div>
+      </div>
 
-        <!-- 연도별 트렌드 -->
-        <div style="margin-top:10px;">
-          <div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:6px;">연도별 주요 양수기관 트렌드</div>
-          <div class="trend-grid">
-            <div class="trend-item">
-              <div class="trend-year">2022년</div>
-              <div class="trend-row"><span class="trend-org">D대부업체</span><div class="trend-track"><div class="trend-fill" style="width:70%;background:var(--blue);"></div></div><span class="trend-pct">43%</span></div>
-              <div class="trend-row"><span class="trend-org">△△저축</span><div class="trend-track"><div class="trend-fill" style="width:40%;background:var(--t3);"></div></div><span class="trend-pct">24%</span></div>
-            </div>
-            <div class="trend-item">
-              <div class="trend-year">2023년</div>
-              <div class="trend-row"><span class="trend-org">△△저축</span><div class="trend-track"><div class="trend-fill" style="width:82%;background:var(--blue);"></div></div><span class="trend-pct">82%</span></div>
-              <div class="trend-row"><span class="trend-org">□□신용</span><div class="trend-track"><div class="trend-fill" style="width:12%;background:var(--t3);"></div></div><span class="trend-pct">12%</span></div>
-            </div>
-            <div class="trend-item">
-              <div class="trend-year">2024년</div>
-              <div class="trend-row"><span class="trend-org">△△저축</span><div class="trend-track"><div class="trend-fill" style="width:60%;background:var(--blue);"></div></div><span class="trend-pct">60%</span></div>
-              <div class="trend-row"><span class="trend-org">M자산관리</span><div class="trend-track"><div class="trend-fill" style="width:28%;background:var(--amber);"></div></div><span class="trend-pct">28%</span></div>
-            </div>
+      <!-- ★ 이의제기·분쟁 이력 -->
+      <div class="sub-hdr">이의제기 · 분쟁 이력</div>
+      <div class="dispute-list">
+        <div class="dispute-item">
+          <div class="dispute-dot" style="background:var(--red);"></div>
+          <div class="dispute-date">2024.09.03</div>
+          <div class="dispute-body">
+            <div class="dispute-title">채권 귀속처 불명확 이의 제기 <span class="badge rd">민원</span></div>
+            <div class="dispute-desc">△△저축은행 서면 고지 미이행으로 이의 신청. 처리 중.</div>
+          </div>
+        </div>
+        <div class="dispute-item">
+          <div class="dispute-dot" style="background:var(--amber);"></div>
+          <div class="dispute-date">2024.07.15</div>
+          <div class="dispute-body">
+            <div class="dispute-title">감면 조건 이의 신청 <span class="badge am">처리완료</span></div>
+            <div class="dispute-desc">감면 특례 미적용 이의 → 30% 감면 적용 후 종결.</div>
+          </div>
+        </div>
+        <div class="dispute-item">
+          <div class="dispute-dot" style="background:var(--green);"></div>
+          <div class="dispute-date">2023.11.20</div>
+          <div class="dispute-body">
+            <div class="dispute-title">채권 이전 통보 요청 <span class="badge gn">완료</span></div>
+            <div class="dispute-desc">○○캐피탈 양수도 내역 서면 요청 → 고지서 발송 완료.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 04 관련 질의 이력 ── -->
+    <div class="sec">
+      <div class="sh">
+        <span class="sn">04</span>
+        <span class="st">관련 질의 이력</span>
+        <span class="badge gr">이번 상담</span>
+        <span class="sm">본문 AI 어시스턴트 연동</span>
+      </div>
+      <div class="qnote">📋 본문 AI 어시스턴트의 채권 관련 질의 이력을 표시합니다. 새 질의는 본문에서 입력하세요.</div>
+
+      <div class="qitem">
+        <div class="qrow">
+          <span class="qwho">심사역 · 00:03:12</span>
+          <div class="qbub">A카드 채권이 현재 어디에 있을 가능성이 높아?</div>
+        </div>
+        <div class="acard">
+          <div class="ahdr"><span style="font-size:12px;">🤖</span><span class="albl">AI 어시스턴트</span><span class="atime">00:03:18</span></div>
+          <div class="abody">
+            A카드 채권의 최근 3년간 양수도 이력 분석 결과입니다.
+            <table>
+              <thead><tr><th>순위</th><th>예상 양수기관</th><th>건수</th><th>비율</th></tr></thead>
+              <tbody>
+                <tr><td><strong>1</strong></td><td><strong>D대부업체</strong></td><td>5,230</td><td style="color:var(--blue);font-weight:700;">43.20%</td></tr>
+                <tr><td>2</td><td>E저축은행</td><td>2,891</td><td>23.90%</td></tr>
+                <tr><td>3</td><td>F자산관리</td><td>1,205</td><td>10.00%</td></tr>
+              </tbody>
+            </table>
+            <div class="acaut">※ 과거 실적 기반 참고 정보입니다.</div>
           </div>
         </div>
       </div>
 
-      <!-- ── 03 역방향 추적 ── -->
-      <div class="section" id="s3">
-        <div class="sec-hdr">
-          <span class="sec-num">03</span>
-          <span class="sec-title">역방향 추적</span>
-          <span class="badge amber">역방향</span>
-          <span class="sec-meta">현재 기관 → 원채권자</span>
+      <div class="qitem">
+        <div class="qrow">
+          <span class="qwho">심사역 · 00:09:44</span>
+          <div class="qbub">3년 전 받은 독촉장 A카드. 현재 양도 가능성 높은 기관은?</div>
         </div>
-
-        <div class="card">
-          <!-- 역방향 타임라인 -->
-          <div class="timeline">
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line none"></div>
-                <div class="tl-dot current">현</div>
-                <div class="tl-line solid"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org" style="color:var(--blue);">△△저축은행</div>
-                <div class="tl-date">현재 귀속 추정</div>
-              </div>
-            </div>
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line solid"></div>
-                <div class="tl-dot middle" style="font-size:10px;">←</div>
-                <div class="tl-line solid"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org">○○캐피탈</div>
-                <div class="tl-date">'21.06 양도</div>
-              </div>
-            </div>
-            <div class="tl-node">
-              <div class="tl-dot-wrap">
-                <div class="tl-line solid"></div>
-                <div class="tl-dot origin">원</div>
-                <div class="tl-line none"></div>
-              </div>
-              <div class="tl-info">
-                <div class="tl-org">A국민은행</div>
-                <div class="tl-date">원채권자</div>
-              </div>
-            </div>
+        <div class="acard">
+          <div class="ahdr"><span style="font-size:12px;">🤖</span><span class="albl">AI 어시스턴트</span><span class="atime">00:09:51</span></div>
+          <div class="abody">
+            A카드 채권의 2022년 이후 양수도 체인 추적 결과입니다.<br><br>
+            <strong>A카드 →</strong>(2022~2023) D대부업체 <strong>→</strong>(2024~2025) M자산관리<br><br>
+            D대부업체가 1차 양수기관(43.2%)이나, M자산관리로 2차 양도된 이력 600건 확인. 현 시점 <strong>M자산관리가 최종 보유기관일 가능성</strong>이 있습니다.
+            <div class="acaut">※ 합병에 의한 변경 건 없음 · 전 건 채권 매각 신고 이력</div>
           </div>
-
-          <div class="rev-summary">
-            현재 추정 귀속 기관 <strong>△△저축은행</strong>의 채권은 <strong>○○캐피탈</strong>로부터 2023년 3월 양수한 것으로 확인되며, 최초 원채권자는 <strong>A국민은행</strong>입니다.<br>
-            합병에 의한 변경 건은 없으며 전 건 채권 매각으로 신고된 이력입니다.
-          </div>
-          <div class="ai-src">채권양수도 추론 에이전트 · 지식베이스 v2024.11</div>
         </div>
       </div>
 
-      <!-- ── 04 관련 질의 이력 (읽기 전용) ── -->
-      <div class="section" id="s4">
-        <div class="sec-hdr">
-          <span class="sec-num">04</span>
-          <span class="sec-title">관련 질의 이력</span>
-          <span class="badge gray">이번 상담</span>
-          <span class="sec-meta">본문 AI 어시스턴트 연동</span>
-        </div>
-
-        <!-- 읽기 전용 안내 -->
-        <div class="qa-readonly-note">
-          📋 본문 AI 어시스턴트의 채권 관련 질의 이력을 표시합니다. 새 질의는 본문에서 입력하세요.
-        </div>
-
-        <div class="qa-item">
-          <div class="q-row">
-            <span class="q-who">심사역 · 00:03:12</span>
-            <div class="q-bubble">A카드 채권이 현재 어디에 있을 가능성이 높아?</div>
-          </div>
-          <div class="a-card">
-            <div class="a-hdr"><span style="font-size:12px;">🤖</span><span class="a-lbl">AI 어시스턴트</span><span class="a-time">00:03:18</span></div>
-            <div class="a-body">
-              A카드 채권의 최근 3년간 양수도 이력 분석 결과입니다.
-              <table>
-                <thead><tr><th>순위</th><th>예상 양수기관</th><th>건수</th><th>비율</th></tr></thead>
-                <tbody>
-                  <tr><td><strong>1</strong></td><td><strong>D대부업체</strong></td><td>5,230</td><td style="color:var(--blue);font-weight:700;">43.20%</td></tr>
-                  <tr><td>2</td><td>E저축은행</td><td>2,891</td><td>23.90%</td></tr>
-                  <tr><td>3</td><td>F자산관리</td><td>1,205</td><td>10.00%</td></tr>
-                </tbody>
-              </table>
-              <div class="a-caution">※ 과거 실적 기반 참고 정보입니다.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="q-row">
-            <span class="q-who">심사역 · 00:09:44</span>
-            <div class="q-bubble">3년 전 받은 독촉장 A카드. 현재 양도 가능성 높은 기관은?</div>
-          </div>
-          <div class="a-card">
-            <div class="a-hdr"><span style="font-size:12px;">🤖</span><span class="a-lbl">AI 어시스턴트</span><span class="a-time">00:09:51</span></div>
-            <div class="a-body">
-              A카드 채권의 2022년 이후 양수도 체인 추적 결과입니다.<br><br>
-              <strong>A카드 →</strong>(2022~2023) D대부업체 <strong>→</strong>(2024~2025) M자산관리<br><br>
-              D대부업체가 1차 양수기관(43.2%)이나, M자산관리로 2차 양도된 이력 600건 확인. 현 시점 <strong>M자산관리가 최종 보유기관일 가능성</strong>이 있습니다.
-              <div class="a-caution">※ 합병에 의한 변경 건 없음 · 전 건 채권 매각 신고 이력</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div><!-- /pbody -->
+    </div>
   </div><!-- /panel -->
+</div><!-- /frame -->
+
+<div class="fnote">
+  <strong>피그마 import 방법</strong><br>
+  1. Chrome 개발자도구 → Ctrl+Shift+P → "Capture full size screenshot" 으로 전체 높이 캡처<br>
+  2. 또는 .frame 요소 우클릭 → "Capture node screenshot" 으로 패널 영역만 캡처<br>
+  3. 피그마에 이미지 붙여넣기 후 레이어 분리 작업<br>
+  <strong>추천:</strong> "HTML to Figma" 플러그인으로 직접 컴포넌트 변환 가능
 </div>
 
-<script>
-function setActive(el) {
-  document.querySelectorAll('.anc').forEach(a => a.classList.remove('active'));
-  el.classList.add('active');
-}
-
-// 스크롤 시 현재 섹션 자동 감지 → 앵커 active 업데이트
-const body = document.getElementById('panelBody');
-const sections = ['s1','s2','s3','s4'];
-body.addEventListener('scroll', () => {
-  let current = sections[0];
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el && el.offsetTop - body.scrollTop <= 60) current = id;
-  });
-  document.querySelectorAll('.anc').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-  });
-});
-
-// 앵커 클릭 시 부드러운 스크롤
-document.querySelectorAll('.anc').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.getElementById(a.getAttribute('href').slice(1));
-    if (target) body.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
-  });
-});
-</script>
 </body>
 </html>
