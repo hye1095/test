@@ -1,193 +1,556 @@
-👤
-고객 정보 · 상담 가이드 상세
-본문 요약 카드 확장 보기
-✕
-01
-고객 기본정보
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>고객 정보 · 상담 가이드 상세 팝업 — Figma Export</title>
+<style>
+:root {
+  --bg:#EDEEF2;--surface:#FFFFFF;--s2:#F4F5F8;--s3:#EDEEF2;
+  --border:#E0E3EA;--border-mid:#C4C9D6;
+  --t1:#16181E;--t2:#4A5268;--t3:#8A93A8;
+  --blue:#2557E6;--blue-dim:#EDF1FD;--blue-mid:#B8C8F8;
+  --amber:#B87010;--amber-dim:#FDF4E6;
+  --green:#178048;--green-dim:#EBF7F0;
+  --red:#CF3535;--red-dim:#FDF0F0;
+  --r:8px;--r-sm:5px;
+  font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#C8CAD0;padding:24px;}
 
-02
-채무 현황
+/* 배경 딤 */
+.backdrop{
+  width:1440px;
+  background:rgba(22,24,30,0.55);
+  border-radius:12px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:32px 24px 40px;
+  min-height:900px;
+}
 
-03
-상담 이력
+/* 센터 모달 */
+.modal{
+  width:1100px;
+  background:var(--surface);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 16px 60px rgba(0,0,0,.28);
+  display:flex;
+  flex-direction:column;
+}
 
-04
-AI 상담 가이드
+/* 모달 헤더 */
+.mh{
+  padding:14px 22px 12px;
+  background:var(--t1);
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+}
+.mh-title{font-size:13px;font-weight:700;color:#fff;flex:1;}
+.mh-sub{font-size:10px;color:#6B7280;}
+.mh-close{width:28px;height:28px;border-radius:6px;background:#23262E;color:#9AA5B8;display:flex;align-items:center;justify-content:center;font-size:14px;}
 
-05
-메모 · 체크리스트
-01
-고객 기본정보
-자동 조회
-기준정보시스템 · 2024.11.12 08:30
-김○
-김○○ 58세 · 남
-발문 #202411482 · 접수 2024.11.12
-인적 사항
-생년월일
-1966.○○.○○
-성별
-남
-연락처
-010-○○○○-○○○○
-주소
-서울시 ○○구 ○○동
+/* 앵커 네비 */
+.anav{display:flex;align-items:center;padding:0 22px;background:var(--surface);border-bottom:1px solid var(--border);}
+.anc{display:flex;align-items:center;gap:5px;padding:10px 14px 10px 0;font-size:10px;font-weight:600;color:var(--t3);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;text-decoration:none;}
+.anc.on{color:var(--t1);border-bottom-color:var(--t1);}
+.anc .n{font-size:9px;font-weight:800;}
+.anc.on .n{color:var(--blue);}
+.asep{width:1px;height:12px;background:var(--border);margin:0 6px;}
 
-발문 현황
-발문 유형
-채권 귀속처 확인
-접수 채널
-전화 (콜센터)
-재방문 횟수
-3회 ⚠
-민원 이력
-2건 ⚠
-⚠ 고강도 민원 이력 고객 — 상담 전 이력 충분히 검토 필요
-02
-채무 현황
-AI 요약
-기간계 · 2024.11.11
-38,200,000원
-3개 기관
-○○캐피탈
-21,010,000원 (55%)
+/* 모달 바디 — 2단 그리드 */
+.mbody{
+  padding:20px 22px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  background:var(--bg);
+}
 
-△△저축은행
-11,460,000원 (30%)
+/* 풀위드 섹션 (2컬럼 전체) */
+.full{grid-column:1/-1;}
 
-불명확 채권
-5,730,000원 (15%)
+/* 섹션 카드 */
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.sc-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--surface);}
+.sc-num{font-size:9px;font-weight:800;color:var(--blue);letter-spacing:.04em;}
+.sc-title{font-size:11px;font-weight:700;flex:1;}
+.sc-meta{font-size:10px;color:var(--t3);}
+.sc-body{padding:13px 14px;}
 
+/* 공통 */
+.badge{display:inline-flex;align-items:center;padding:1px 7px;border-radius:20px;font-size:10px;font-weight:600;}
+.badge.bl{background:var(--blue-dim);color:var(--blue);}
+.badge.am{background:var(--amber-dim);color:var(--amber);}
+.badge.gr{background:var(--s2);color:var(--t2);border:1px solid var(--border);}
+.badge.gn{background:var(--green-dim);color:var(--green);}
+.badge.rd{background:var(--red-dim);color:var(--red);}
+.badge.dk{background:var(--t1);color:#fff;}
 
-기관별 채무 상세
-기관명
-원금
-잔여채무
-연체시작
-소멸시효
-상태
-○○캐피탈
-21,010,000
-18,350,000
-2020.03.15
-2025.03.14 ⚠
-시효임박
-△△저축은행
-11,460,000
-10,200,000
-2021.07.01
-2026.07.01
-정상
-불명확 채권
-5,730,000
-미확인
-미확인
-미확인
-확인필요
-⚠ ○○캐피탈 채권 소멸시효 D-122 임박. 시효 중단 여부 즉시 확인 필요
-03
-상담 이력
-전체 3건
-클릭 시 상세 내용 펼침
-민원
-2024.09.03
-박○○ 심사역
-▴ 접기
-상담 유형
-채권 귀속처 이의 제기
-주요 내용
-△△저축은행 서면 고지 미이행으로 이의 신청. 귀속처 불명확 주장.
-처리 결과
-처리 중 (담당자 확인 요청 발송)
-다음 조치
-귀속처 확인 후 서면 고지 재발송 예정
-소요 시간
-34분
-재방문
-2024.07.15
-이○○ 심사역
-▾ 상세보기
-감면 조건 안내 — 30% 감면 특례 적용 확인 후 안내. 분할 상환 의향 확인.
-완료
-2024.05.22
-최○○ 심사역
-▾ 상세보기
-채무 현황 안내 — 3개 기관 채무 현황 통합 안내. 채권 귀속처 최초 문의.
-04
-접수 기반 AI 상담 가이드
-AI 분석
-접수 내용 · 이력 기반 자동 분석
-상황 분석
-채권 귀속처 불명확으로 인한 이의제기 케이스. 역방향 추적 선행 후 고지 의무 이행 여부 확인이 핵심입니다. 소멸시효 임박(D-122)으로 법적 판단이 긴급히 필요합니다.
-📋 참고해야 할 정책 · 규정
-제23조 채권양수도 이력 고지 의무
-채권 양수도 발생 시 채무자에게 서면 고지 필요. 고지 후 15일 이내 이의 신청 가능.
-사내규정 v2024.09 · 자동 매핑
-제31조 장기 연체 채무자 감면 특례
-3년 이상 장기 연체 시 원금 최대 30% 감면 적용 가능. 소득 분위 기준 분할 상환 전환 가능.
-사내규정 v2024.09 · 자동 매핑
-제44조 소멸시효 중단 사유
-채무 승인, 지급 청구, 압류 등 중단 사유 해당 여부 확인 필요. 시효 완성 전 중단 조치 여부 파악.
-사내규정 v2024.09 · 자동 매핑
-권장 상담 처리 순서
-1
-9월 민원 내용 먼저 언급 — 이전 상담에서 처리되지 않은 내용에 대해 먼저 공감 및 진행 상황 안내
-2
-채권 귀속처 확인 — 채권양수도 추론 에이전트 실행 후 현재 귀속 기관 파악 및 안내
-3
-고지 의무 이행 여부 확인 — △△저축은행 미고지 사실 확인 후 이의 신청 가능 여부 안내
-4
-소멸시효 안내 — ○○캐피탈 채권 시효 임박 사실 고지 및 중단 조치 여부 확인
-5
-감면 조건 안내 — 장기 연체 감면 특례 (30%) 적용 가능 여부 확인 및 안내
-6
-분할 상환 의향 확인 — 감면 후 분할 상환 전환 의향 여부 파악 후 절차 안내
-AI 어드바이스
-🤖 이 고객은 3회 재방문·2건 민원으로 신뢰 회복이 우선입니다. 정보 제공보다 공감과 명확한 답변이 중요하며, 귀속처를 확정 짓지 못하더라도 "확인 중이며 ○○일까지 서면으로 안내드리겠습니다" 형태의 구체적 약속이 효과적입니다.
-유사 케이스 해결 이력
-유사도 91%
-2024.08 완료
-해결
-채권 귀속처 불명확 민원 → 역방향 추적 후 귀속 기관 확인, 서면 고지 재발송으로 종결.
-처리 기간
-5일
-소요 시간
-28분
-유사도 84%
-2024.06 완료
-해결
-소멸시효 임박 + 귀속처 불명확 복합 케이스 → 시효 중단 확인 후 감면 특례 적용 합의.
-처리 기간
-8일
-소요 시간
-41분
-05
-상담 전 메모 · 체크리스트
-직접 입력
-상담 시작 시 S-03 참조 패널에 자동 노출
-자유 메모
-○○캐피탈 채권 귀속처 재확인 필요. 9월 민원 내용 먼저 언급하고 새 귀속처 안내 예정. 감면 가능 여부도 확인할 것. 소멸시효 임박 → 긴급 확인 필요.
-초기화
-저장
-✓ 자동 저장됨 · 14:32
-상담 체크리스트 직접 추가
+.sec-lbl{font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--t3);text-transform:uppercase;margin-bottom:6px;}
+.divider{height:1px;background:var(--border);margin:10px 0;}
 
-+ 추가
-9월 민원 경과 먼저 설명
-✕
-채권 귀속처 확인 (채권양수도 에이전트)
-✕
-소멸시효 D-122 안내
-✕
-감면 조건 (30%) 안내
-✕
-분할 상환 의향 확인
-✕
-상담 시작 시 메모 · 체크리스트가 S-03 상담 진행 화면에 자동으로 연동됩니다.
-닫기
-저장 후 상담 시작 →
-피그마 import 방법
-1. Chrome 개발자도구 → Ctrl+Shift+P → "Capture full size screenshot" 으로 전체 높이 캡처
-2. 또는 .modal 요소 우클릭 → "Capture node screenshot" 으로 모달만 캡처
-3. 피그마에 이미지 붙여넣기 후 레이어 분리 작업
-추천: "HTML to Figma" 플러그인으로 직접 컴포넌트 변환 가능
+/* ── 01 고객 기본정보 ── */
+.profile-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.avatar{width:44px;height:44px;border-radius:50%;background:#DDE6F8;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--blue);}
+.pname{font-size:15px;font-weight:700;}
+.pmeta{font-size:11px;color:var(--t3);margin-top:2px;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.info-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 10px;}
+.info-lbl{font-size:9px;color:var(--t3);margin-bottom:2px;}
+.info-val{font-size:11px;font-weight:600;color:var(--t1);}
+.info-val.warn{color:var(--red);}
+
+.warn-banner{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--red-dim);border:1px solid #F5BEBE;border-radius:var(--r-sm);font-size:10px;font-weight:600;color:var(--red);margin-top:8px;}
+.ok-banner{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--green-dim);border:1px solid #B0E0C6;border-radius:var(--r-sm);font-size:10px;font-weight:600;color:var(--green);margin-top:8px;}
+
+/* ── 02 채무 현황 ── */
+.debt-total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.debt-amount{font-size:18px;font-weight:700;}
+.dbar-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--t2);margin-bottom:3px;}
+.dbar-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:7px;}
+.dbar-fill{height:100%;border-radius:3px;}
+
+.debt-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:8px;}
+.debt-table th{background:var(--s3);padding:6px 8px;text-align:left;font-weight:700;color:var(--t2);border-bottom:1px solid var(--border);}
+.debt-table td{padding:6px 8px;border-bottom:1px solid var(--border);}
+.debt-table tr:last-child td{border-bottom:none;}
+
+/* ── 03 상담 이력 ── */
+.tl-list{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:10px;padding-bottom:0;position:relative;}
+.tl-item+.tl-item{margin-top:0;}
+
+/* 상담 이력 카드 */
+.hist-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--r);padding:10px 12px;
+  margin-bottom:8px;cursor:pointer;
+  transition:border-color .14s;
+}
+.hist-card:last-child{margin-bottom:0;}
+.hist-card:hover{border-color:var(--blue-mid);}
+.hist-card.expanded{border-color:var(--blue);border-left:3px solid var(--blue);}
+.hist-card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:0;}
+.hist-date{font-size:10px;color:var(--t3);}
+.hist-counselor{font-size:10px;color:var(--t2);}
+.hist-toggle{font-size:10px;color:var(--blue);margin-left:auto;}
+
+/* 상담 이력 상세 (펼침) */
+.hist-detail{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);}
+.hist-detail-row{display:flex;gap:8px;margin-bottom:6px;}
+.hist-detail-lbl{font-size:10px;color:var(--t3);min-width:64px;flex-shrink:0;}
+.hist-detail-val{font-size:11px;color:var(--t1);flex:1;line-height:1.6;}
+
+/* ── 04 접수 기반 AI 분석 가이드 ── */
+.guide-summary{
+  background:var(--blue-dim);border:1px solid var(--blue-mid);
+  border-radius:var(--r-sm);padding:10px 12px;
+  font-size:11px;line-height:1.7;color:var(--t1);
+  margin-bottom:12px;
+}
+.guide-summary strong{color:var(--blue);}
+
+.guide-section{margin-bottom:12px;}
+.guide-section:last-child{margin-bottom:0;}
+.guide-section-title{font-size:10px;font-weight:700;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+
+.policy-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 11px;margin-bottom:5px;}
+.policy-card:last-child{margin-bottom:0;}
+.policy-name{font-size:11px;font-weight:700;margin-bottom:3px;}
+.policy-desc{font-size:10px;color:var(--t2);line-height:1.6;}
+.policy-status{display:flex;gap:5px;margin-top:5px;}
+
+.step-list{display:flex;flex-direction:column;gap:5px;}
+.step-item{display:flex;gap:8px;align-items:flex-start;}
+.step-num{width:18px;height:18px;border-radius:50%;background:var(--blue-dim);color:var(--blue);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-text{font-size:11px;color:var(--t1);line-height:1.6;flex:1;}
+
+.advice-card{
+  background:linear-gradient(135deg,var(--blue-dim),#F5F3FF);
+  border:1px solid var(--blue-mid);border-radius:var(--r-sm);
+  padding:10px 12px;font-size:11px;line-height:1.7;
+}
+
+/* ── 유사 케이스 ── */
+.case-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 11px;margin-bottom:6px;}
+.case-item:last-child{margin-bottom:0;}
+.case-hdr{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.case-sim{font-size:10px;font-weight:700;color:var(--blue);}
+.case-date{font-size:10px;color:var(--t3);}
+.case-body{font-size:11px;color:var(--t1);line-height:1.6;}
+.case-result{display:flex;gap:6px;margin-top:5px;align-items:center;}
+.case-result-lbl{font-size:9px;color:var(--t3);}
+
+/* ── 관련 규정 매핑 ── */
+.rule-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 11px;margin-bottom:5px;}
+.rule-item:last-child{margin-bottom:0;}
+.rule-art{font-size:10px;font-weight:700;color:var(--t2);margin-bottom:3px;}
+.rule-text{font-size:11px;color:var(--t1);line-height:1.6;}
+.rule-src{font-size:9px;color:var(--t3);margin-top:4px;padding-top:4px;border-top:1px dashed var(--border);}
+
+/* ── 05 상담 전 메모 ── */
+.memo-area{
+  width:100%;min-height:100px;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:10px 12px;
+  font-size:11px;color:var(--t1);line-height:1.7;
+  font-family:inherit;resize:vertical;
+  outline:none;
+}
+.memo-area:focus{border-color:var(--blue-mid);}
+.memo-toolbar{display:flex;gap:6px;margin-top:8px;align-items:center;}
+.memo-btn{font-size:10px;font-weight:600;padding:4px 11px;border-radius:var(--r-sm);cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t2);}
+.memo-btn.blue{background:var(--blue);color:#fff;border-color:var(--blue);}
+.memo-saved{font-size:10px;color:var(--green);margin-left:auto;}
+
+.checklist-add-area{margin-top:10px;}
+.checklist-input-row{display:flex;gap:8px;margin-bottom:6px;}
+.cl-input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-family:inherit;outline:none;}
+.cl-input:focus{border-color:var(--blue-mid);}
+.cl-add-btn{font-size:10px;font-weight:600;padding:5px 12px;border-radius:var(--r-sm);background:var(--blue-dim);border:1px solid var(--blue-mid);color:var(--blue);cursor:pointer;white-space:nowrap;}
+
+.cl-list{display:flex;flex-direction:column;gap:4px;}
+.cl-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--s2);border-radius:var(--r-sm);}
+.chk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border-mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.cl-text{font-size:11px;flex:1;}
+.cl-del{font-size:11px;color:var(--t3);cursor:pointer;}
+
+/* 하단 액션 바 */
+.mfooter{
+  padding:12px 22px;background:var(--surface);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+}
+.mfooter-note{font-size:10px;color:var(--t3);flex:1;}
+.mfooter-btn{font-size:11px;font-weight:600;padding:7px 18px;border-radius:var(--r-sm);cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t2);}
+.mfooter-btn.blue{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* 피그마 안내 */
+.fnote{margin-top:16px;background:#1A1D23;color:#9AA5B8;border-radius:8px;padding:12px 16px;font-size:11px;line-height:1.8;width:1440px;}
+.fnote strong{color:#6DA3F5;}
+</style>
+</head>
+<body>
+
+<!-- 배경 딤 + 모달 -->
+<div class="backdrop">
+<div class="modal">
+
+  <!-- 모달 헤더 -->
+  <div class="mh">
+    <span style="font-size:15px;">👤</span>
+    <span class="mh-title">고객 정보 · 상담 가이드 상세</span>
+    <span class="mh-sub">본문 요약 카드 확장 보기</span>
+    <div class="mh-close">✕</div>
+  </div>
+
+  <!-- 앵커 네비 -->
+  <nav class="anav">
+    <a class="anc on"><span class="n">01</span> 고객 기본정보</a>
+    <div class="asep"></div>
+    <a class="anc"><span class="n">02</span> 채무 현황</a>
+    <div class="asep"></div>
+    <a class="anc"><span class="n">03</span> 상담 이력</a>
+    <div class="asep"></div>
+    <a class="anc"><span class="n">04</span> AI 상담 가이드</a>
+    <div class="asep"></div>
+    <a class="anc"><span class="n">05</span> 메모 · 체크리스트</a>
+  </nav>
+
+  <!-- 모달 바디 -->
+  <div class="mbody">
+
+    <!-- ── 01 고객 기본정보 ── -->
+    <div class="sc">
+      <div class="sc-hdr">
+        <span class="sc-num">01</span>
+        <span class="sc-title">고객 기본정보</span>
+        <span class="badge gr">자동 조회</span>
+        <span class="sc-meta">기준정보시스템 · 2024.11.12 08:30</span>
+      </div>
+      <div class="sc-body">
+        <div class="profile-row">
+          <div class="avatar">김○</div>
+          <div>
+            <div class="pname">김○○ <span class="badge gr">58세 · 남</span></div>
+            <div class="pmeta">발문 #202411482 · 접수 2024.11.12</div>
+          </div>
+        </div>
+
+        <div class="sec-lbl">인적 사항</div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-lbl">생년월일</div><div class="info-val">1966.○○.○○</div></div>
+          <div class="info-item"><div class="info-lbl">성별</div><div class="info-val">남</div></div>
+          <div class="info-item"><div class="info-lbl">연락처</div><div class="info-val">010-○○○○-○○○○</div></div>
+          <div class="info-item"><div class="info-lbl">주소</div><div class="info-val">서울시 ○○구 ○○동</div></div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="sec-lbl">발문 현황</div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-lbl">발문 유형</div><div class="info-val">채권 귀속처 확인</div></div>
+          <div class="info-item"><div class="info-lbl">접수 채널</div><div class="info-val">전화 (콜센터)</div></div>
+          <div class="info-item"><div class="info-lbl">재방문 횟수</div><div class="info-val warn">3회 ⚠</div></div>
+          <div class="info-item"><div class="info-lbl">민원 이력</div><div class="info-val warn">2건 ⚠</div></div>
+        </div>
+
+        <div class="warn-banner">⚠ 고강도 민원 이력 고객 — 상담 전 이력 충분히 검토 필요</div>
+      </div>
+    </div>
+
+    <!-- ── 02 채무 현황 ── -->
+    <div class="sc">
+      <div class="sc-hdr">
+        <span class="sc-num">02</span>
+        <span class="sc-title">채무 현황</span>
+        <span class="badge bl">AI 요약</span>
+        <span class="sc-meta">기간계 · 2024.11.11</span>
+      </div>
+      <div class="sc-body">
+        <div class="debt-total">
+          <span class="debt-amount">38,200,000원</span>
+          <span class="badge gr">3개 기관</span>
+        </div>
+
+        <div class="dbar-row"><span>○○캐피탈</span><span style="font-weight:600;">21,010,000원 (55%)</span></div>
+        <div class="dbar-track"><div class="dbar-fill" style="width:55%;background:var(--blue);"></div></div>
+        <div class="dbar-row"><span>△△저축은행</span><span style="font-weight:600;">11,460,000원 (30%)</span></div>
+        <div class="dbar-track"><div class="dbar-fill" style="width:30%;background:var(--t3);"></div></div>
+        <div class="dbar-row" style="color:var(--amber);"><span>불명확 채권</span><span style="font-weight:600;">5,730,000원 (15%)</span></div>
+        <div class="dbar-track"><div class="dbar-fill" style="width:15%;background:var(--amber);"></div></div>
+
+        <div class="divider"></div>
+        <div class="sec-lbl">기관별 채무 상세</div>
+        <table class="debt-table">
+          <thead><tr><th>기관명</th><th>원금</th><th>잔여채무</th><th>연체시작</th><th>소멸시효</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">○○캐피탈</td>
+              <td>21,010,000</td><td>18,350,000</td>
+              <td>2020.03.15</td>
+              <td style="color:var(--red);font-weight:600;">2025.03.14 ⚠</td>
+              <td><span class="badge rd">시효임박</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">△△저축은행</td>
+              <td>11,460,000</td><td>10,200,000</td>
+              <td>2021.07.01</td>
+              <td>2026.07.01</td>
+              <td><span class="badge gr">정상</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--amber);">불명확 채권</td>
+              <td style="color:var(--amber);">5,730,000</td>
+              <td style="color:var(--amber);">미확인</td>
+              <td style="color:var(--t3);">미확인</td>
+              <td style="color:var(--t3);">미확인</td>
+              <td><span class="badge am">확인필요</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="warn-banner" style="margin-top:8px;">⚠ ○○캐피탈 채권 소멸시효 D-122 임박. 시효 중단 여부 즉시 확인 필요</div>
+      </div>
+    </div>
+
+    <!-- ── 03 상담 이력 (풀위드) ── -->
+    <div class="sc full">
+      <div class="sc-hdr">
+        <span class="sc-num">03</span>
+        <span class="sc-title">상담 이력</span>
+        <span class="badge gr">전체 3건</span>
+        <span class="sc-meta">클릭 시 상세 내용 펼침</span>
+      </div>
+      <div class="sc-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+
+        <!-- 이력 1 — 펼침 상태 -->
+        <div class="hist-card expanded">
+          <div class="hist-card-hdr">
+            <span class="badge rd">민원</span>
+            <span class="hist-date">2024.09.03</span>
+            <span class="hist-counselor">박○○ 심사역</span>
+            <span class="hist-toggle">▴ 접기</span>
+          </div>
+          <div class="hist-detail">
+            <div class="hist-detail-row"><span class="hist-detail-lbl">상담 유형</span><span class="hist-detail-val">채권 귀속처 이의 제기</span></div>
+            <div class="hist-detail-row"><span class="hist-detail-lbl">주요 내용</span><span class="hist-detail-val">△△저축은행 서면 고지 미이행으로 이의 신청. 귀속처 불명확 주장.</span></div>
+            <div class="hist-detail-row"><span class="hist-detail-lbl">처리 결과</span><span class="hist-detail-val">처리 중 (담당자 확인 요청 발송)</span></div>
+            <div class="hist-detail-row"><span class="hist-detail-lbl">다음 조치</span><span class="hist-detail-val">귀속처 확인 후 서면 고지 재발송 예정</span></div>
+            <div class="hist-detail-row"><span class="hist-detail-lbl">소요 시간</span><span class="hist-detail-val">34분</span></div>
+          </div>
+        </div>
+
+        <!-- 이력 2 -->
+        <div class="hist-card">
+          <div class="hist-card-hdr">
+            <span class="badge am">재방문</span>
+            <span class="hist-date">2024.07.15</span>
+            <span class="hist-counselor">이○○ 심사역</span>
+            <span class="hist-toggle">▾ 상세보기</span>
+          </div>
+          <div style="margin-top:6px;font-size:11px;color:var(--t2);">감면 조건 안내 — 30% 감면 특례 적용 확인 후 안내. 분할 상환 의향 확인.</div>
+        </div>
+
+        <!-- 이력 3 -->
+        <div class="hist-card">
+          <div class="hist-card-hdr">
+            <span class="badge gn">완료</span>
+            <span class="hist-date">2024.05.22</span>
+            <span class="hist-counselor">최○○ 심사역</span>
+            <span class="hist-toggle">▾ 상세보기</span>
+          </div>
+          <div style="margin-top:6px;font-size:11px;color:var(--t2);">채무 현황 안내 — 3개 기관 채무 현황 통합 안내. 채권 귀속처 최초 문의.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 04 AI 상담 가이드 (풀위드) ── -->
+    <div class="sc full">
+      <div class="sc-hdr">
+        <span class="sc-num">04</span>
+        <span class="sc-title">접수 기반 AI 상담 가이드</span>
+        <span class="badge bl">AI 분석</span>
+        <span class="sc-meta">접수 내용 · 이력 기반 자동 분석</span>
+      </div>
+      <div class="sc-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+
+        <!-- 상황 분석 -->
+        <div>
+          <div class="sec-lbl">상황 분석</div>
+          <div class="guide-summary">
+            채권 귀속처 불명확으로 인한 이의제기 케이스. <strong>역방향 추적 선행</strong> 후 고지 의무 이행 여부 확인이 핵심입니다. 소멸시효 임박(D-122)으로 <strong>법적 판단이 긴급히 필요</strong>합니다.
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-section-title">📋 참고해야 할 정책 · 규정</div>
+            <div class="rule-item">
+              <div class="rule-art">제23조 채권양수도 이력 고지 의무</div>
+              <div class="rule-text">채권 양수도 발생 시 채무자에게 서면 고지 필요. 고지 후 15일 이내 이의 신청 가능.</div>
+              <div class="rule-src">사내규정 v2024.09 · 자동 매핑</div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-art">제31조 장기 연체 채무자 감면 특례</div>
+              <div class="rule-text">3년 이상 장기 연체 시 원금 최대 30% 감면 적용 가능. 소득 분위 기준 분할 상환 전환 가능.</div>
+              <div class="rule-src">사내규정 v2024.09 · 자동 매핑</div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-art">제44조 소멸시효 중단 사유</div>
+              <div class="rule-text">채무 승인, 지급 청구, 압류 등 중단 사유 해당 여부 확인 필요. 시효 완성 전 중단 조치 여부 파악.</div>
+              <div class="rule-src">사내규정 v2024.09 · 자동 매핑</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 상담 처리 과정 -->
+        <div>
+          <div class="sec-lbl">권장 상담 처리 순서</div>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>9월 민원 내용 먼저 언급</strong> — 이전 상담에서 처리되지 않은 내용에 대해 먼저 공감 및 진행 상황 안내</div></div>
+            <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>채권 귀속처 확인</strong> — 채권양수도 추론 에이전트 실행 후 현재 귀속 기관 파악 및 안내</div></div>
+            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>고지 의무 이행 여부 확인</strong> — △△저축은행 미고지 사실 확인 후 이의 신청 가능 여부 안내</div></div>
+            <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>소멸시효 안내</strong> — ○○캐피탈 채권 시효 임박 사실 고지 및 중단 조치 여부 확인</div></div>
+            <div class="step-item"><div class="step-num">5</div><div class="step-text"><strong>감면 조건 안내</strong> — 장기 연체 감면 특례 (30%) 적용 가능 여부 확인 및 안내</div></div>
+            <div class="step-item"><div class="step-num">6</div><div class="step-text"><strong>분할 상환 의향 확인</strong> — 감면 후 분할 상환 전환 의향 여부 파악 후 절차 안내</div></div>
+          </div>
+        </div>
+
+        <!-- AI 어드바이스 + 유사 케이스 -->
+        <div>
+          <div class="sec-lbl">AI 어드바이스</div>
+          <div class="advice-card">
+            🤖 이 고객은 <strong>3회 재방문·2건 민원</strong>으로 신뢰 회복이 우선입니다. 정보 제공보다 공감과 명확한 답변이 중요하며, 귀속처를 확정 짓지 못하더라도 <strong>"확인 중이며 ○○일까지 서면으로 안내드리겠습니다"</strong> 형태의 구체적 약속이 효과적입니다.
+          </div>
+
+          <div class="sec-lbl" style="margin-top:12px;">유사 케이스 해결 이력</div>
+          <div class="case-item">
+            <div class="case-hdr">
+              <span class="case-sim">유사도 91%</span>
+              <span class="case-date">2024.08 완료</span>
+              <span class="badge gn">해결</span>
+            </div>
+            <div class="case-body">채권 귀속처 불명확 민원 → 역방향 추적 후 귀속 기관 확인, 서면 고지 재발송으로 종결.</div>
+            <div class="case-result"><span class="case-result-lbl">처리 기간</span><span class="badge gr">5일</span><span class="case-result-lbl" style="margin-left:6px;">소요 시간</span><span class="badge gr">28분</span></div>
+          </div>
+          <div class="case-item">
+            <div class="case-hdr">
+              <span class="case-sim">유사도 84%</span>
+              <span class="case-date">2024.06 완료</span>
+              <span class="badge gn">해결</span>
+            </div>
+            <div class="case-body">소멸시효 임박 + 귀속처 불명확 복합 케이스 → 시효 중단 확인 후 감면 특례 적용 합의.</div>
+            <div class="case-result"><span class="case-result-lbl">처리 기간</span><span class="badge gr">8일</span><span class="case-result-lbl" style="margin-left:6px;">소요 시간</span><span class="badge gr">41분</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 05 상담 전 메모 · 체크리스트 (풀위드) ── -->
+    <div class="sc full">
+      <div class="sc-hdr">
+        <span class="sc-num">05</span>
+        <span class="sc-title">상담 전 메모 · 체크리스트</span>
+        <span class="badge gr">직접 입력</span>
+        <span class="sc-meta">상담 시작 시 S-03 참조 패널에 자동 노출</span>
+      </div>
+      <div class="sc-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+        <!-- 메모 -->
+        <div>
+          <div class="sec-lbl">자유 메모</div>
+          <textarea class="memo-area" placeholder="상담 전 주요 내용을 메모하세요&#10;예) ○○캐피탈 채권 귀속처 재확인 필요. 9월 민원 내용 먼저 언급 예정.">○○캐피탈 채권 귀속처 재확인 필요. 9월 민원 내용 먼저 언급하고 새 귀속처 안내 예정. 감면 가능 여부도 확인할 것. 소멸시효 임박 → 긴급 확인 필요.</textarea>
+          <div class="memo-toolbar">
+            <button class="memo-btn">초기화</button>
+            <button class="memo-btn blue">저장</button>
+            <span class="memo-saved">✓ 자동 저장됨 · 14:32</span>
+          </div>
+        </div>
+
+        <!-- 체크리스트 직접 추가 -->
+        <div>
+          <div class="sec-lbl">상담 체크리스트 직접 추가</div>
+          <div class="checklist-add-area">
+            <div class="checklist-input-row">
+              <input class="cl-input" placeholder="체크리스트 항목 입력 후 추가" value="">
+              <button class="cl-add-btn">+ 추가</button>
+            </div>
+            <div class="cl-list">
+              <div class="cl-row"><div class="chk"></div><span class="cl-text">9월 민원 경과 먼저 설명</span><span class="cl-del">✕</span></div>
+              <div class="cl-row"><div class="chk"></div><span class="cl-text">채권 귀속처 확인 (채권양수도 에이전트)</span><span class="cl-del">✕</span></div>
+              <div class="cl-row"><div class="chk"></div><span class="cl-text">소멸시효 D-122 안내</span><span class="cl-del">✕</span></div>
+              <div class="cl-row"><div class="chk"></div><span class="cl-text">감면 조건 (30%) 안내</span><span class="cl-del">✕</span></div>
+              <div class="cl-row"><div class="chk"></div><span class="cl-text">분할 상환 의향 확인</span><span class="cl-del">✕</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /mbody -->
+
+  <!-- 모달 하단 액션 바 -->
+  <div class="mfooter">
+    <span class="mfooter-note">상담 시작 시 메모 · 체크리스트가 S-03 상담 진행 화면에 자동으로 연동됩니다.</span>
+    <button class="mfooter-btn">닫기</button>
+    <button class="mfooter-btn blue">저장 후 상담 시작 →</button>
+  </div>
+
+</div><!-- /modal -->
+</div><!-- /backdrop -->
+
+<div class="fnote">
+  <strong>피그마 import 방법</strong><br>
+  1. Chrome 개발자도구 → Ctrl+Shift+P → "Capture full size screenshot" 으로 전체 높이 캡처<br>
+  2. 또는 .modal 요소 우클릭 → "Capture node screenshot" 으로 모달만 캡처<br>
+  3. 피그마에 이미지 붙여넣기 후 레이어 분리 작업<br>
+  <strong>추천:</strong> "HTML to Figma" 플러그인으로 직접 컴포넌트 변환 가능
+</div>
+
+</body>
+</html>
